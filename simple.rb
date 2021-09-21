@@ -207,6 +207,48 @@ class If < Struct.new(:condition, :consequence, :alternative)
   end
 end
 
+class Sequence < Struct.new(:first, :second)
+  def to_s
+    "#{first}, #{second}"
+  end
+
+  def inspect
+    "<<#{self}>>"
+  end
+
+  def reducible?
+    true
+  end
+
+  def reduce(environment)
+    case first
+    when DoNothing.new
+      [second, environment]
+    else
+      reduced_first, reduced_environment = first.reduce(environment)
+      [Sequence.new(reduced_first, second), reduced_environment]
+    end
+  end
+end
+
+class While < Struct.new(:condition, :body)
+  def to_s
+    "while (#{condition}) { #{body} }"
+  end
+
+  def inspect
+    "<#{self}>"
+  end
+
+  def reducible?
+    true
+  end
+
+  def reduce(environment)
+    [If.new(condition, Sequence.new(body, self), DoNothing.new), environment]
+  end
+end
+
 class Machine < Struct.new(:statement, :environment)
   def step
     self.statement, self.environment = statement.reduce(environment)
@@ -221,14 +263,3 @@ class Machine < Struct.new(:statement, :environment)
   end
 end
 
-statement = Assign.new(:x, Add.new(Variable.new(:x), Number.new(1)))
-environment = { x: Number.new(2) }
-#Machine.new(statement, environment).run
-Machine.new(
-  If.new(
-    Variable.new(:x),
-    Assign.new(:y, Number.new(1)),
-    Assign.new(:y, Number.new(2))
-  ),
-  { x: Boolean.new(true)}
-).run

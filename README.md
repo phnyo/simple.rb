@@ -1,4 +1,7 @@
-###Plans
+### SIMPLE
 
-##
-Creating a language that can self-host based on interpretation.
+# simple language based on ruby structure
+
+- now able to assign, use ifs, parse sequences
+- bug on while (dont know how to fix... yet.)
+
