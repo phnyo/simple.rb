@@ -1,10 +1,19 @@
-#!/bin/bash
-
-# for each testcase run
-for case in test/test* ; do
+#!/bin/bash 
+exec_test () {
+	echo $1
 	echo "require './app/simple'" > tmp
-	cat $case >> tmp
+	cat $1 >> tmp
 	ruby tmp	
 	rm tmp
 	echo ''
-done
+}
+
+# for each testcase run
+
+if [ $# -eq 0 ]; then
+	for case in test/test* ; do
+		exec_test $case
+	done
+else
+	exec_test 'test/test_'$1
+fi
