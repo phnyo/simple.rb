@@ -1,7 +1,11 @@
-### SIMPLE
+### UNDERSTANDING COMPUTATION
 
-# simple language based on ruby structure
+## semantics (chap. 2)
+- small step
+- big step
+- denotational 
+todo:
+	understanding statements using treetop (section 2.6)
+## regex, automatons (chap. 3)
 
-- now able to assign, use ifs, parse sequences
-- bug on while (dont know how to fix... yet.)
 
